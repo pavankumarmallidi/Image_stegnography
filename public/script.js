@@ -5,6 +5,7 @@ class SteganographyApp {
         this.currentMode = 'encode';
         this.initializeNavigation();
         this.initializeMode();
+        this.steganography = new Steganography();
     }
 
     initializeElements() {
@@ -315,23 +316,11 @@ class SteganographyApp {
         try {
             this.showLoading(true);
             
-            const formData = new FormData();
-            formData.append('image', imageFile);
-            formData.append('message', message);
-            
-            const response = await fetch('/api/steganography/encode', {
-                method: 'POST',
-                body: formData
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to encode message');
-            }
-            
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
+            // Use the steganography class to encode the message
+            const encodedImageBlob = await this.steganography.encode(imageFile, message);
             
             // Create download link
+            const url = window.URL.createObjectURL(encodedImageBlob);
             const downloadLink = document.createElement('a');
             downloadLink.href = url;
             downloadLink.download = 'encoded_' + imageFile.name;
@@ -363,23 +352,12 @@ class SteganographyApp {
         try {
             this.showLoading(true);
             
-            const formData = new FormData();
-            formData.append('image', imageFile);
-            
-            const response = await fetch('/api/steganography/decode', {
-                method: 'POST',
-                body: formData
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to decode message');
-            }
-            
-            const data = await response.json();
+            // Use the steganography class to decode the message
+            const decodedMessage = await this.steganography.decode(imageFile);
             
             // Display decoded message
             const messageContent = this.decodedMessage.querySelector('.message-content');
-            messageContent.textContent = data.message;
+            messageContent.textContent = decodedMessage;
             this.decodedMessage.classList.add('show');
             
             // Add copy button
