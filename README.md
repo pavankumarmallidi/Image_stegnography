@@ -1,6 +1,6 @@
 # SteganoCrypt - Image Steganography Web Application
 
-SteganoCrypt is a professional web application that allows users to hide and extract text messages within images using LSB (Least Significant Bit) steganography. The application provides a modern, responsive interface with dark/light mode support.
+SteganoCrypt is a professional web application that allows users to hide and extract text messages within images using LSB (Least Significant Bit) steganography. The application provides a modern, responsive interface with dark/light mode support and beautiful animations.
 
 ![SteganoCrypt Screenshot](https://via.placeholder.com/800x400?text=SteganoCrypt+Screenshot)
 
@@ -8,11 +8,13 @@ SteganoCrypt is a professional web application that allows users to hide and ext
 
 - **Hide Messages**: Conceal text within images using advanced LSB steganography
 - **Extract Messages**: Retrieve hidden messages from encoded images
-- **Modern UI**: Professional design with glassmorphism effects
+- **Modern UI**: Professional design with glassmorphism effects and smooth animations
 - **Dark/Light Mode**: Toggle between themes with persistent preferences
 - **Responsive Design**: Works on desktop, tablet, and mobile devices
 - **Drag & Drop**: Easy file upload with visual feedback
 - **Security**: Military-grade steganography algorithms
+- **Beautiful Animations**: Floating objects and smooth transitions
+- **Accessibility**: High contrast themes and keyboard navigation
 
 ## Tech Stack
 
@@ -21,6 +23,8 @@ SteganoCrypt is a professional web application that allows users to hide and ext
 - **Image Processing**: Sharp
 - **File Handling**: Multer
 - **Deployment**: Vercel
+- **Animations**: CSS3 Animations and Transitions
+- **Theme Management**: CSS Variables and LocalStorage
 
 ## Local Development
 
@@ -48,6 +52,27 @@ SteganoCrypt is a professional web application that allows users to hide and ext
    ```
 
 4. Open your browser and navigate to `http://localhost:3000`
+
+## Features in Detail
+
+### Theme System
+- Automatic dark/light mode detection
+- Manual theme toggle with persistent preference
+- Smooth theme transitions
+- High contrast color schemes for accessibility
+
+### Animations
+- Floating background objects
+- Smooth page transitions
+- Loading animations
+- Hover effects
+- Gradient text animations
+
+### Security Features
+- LSB steganography implementation
+- Secure file handling
+- Input validation
+- Error handling
 
 ## Deployment to Vercel
 
@@ -118,7 +143,15 @@ POST /api/steganography/decode
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+### Development Guidelines
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
 
@@ -130,3 +163,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [Sharp](https://sharp.pixelplumbing.com/)
 - [Multer](https://github.com/expressjs/multer)
 - [Vercel](https://vercel.com/)
+- [Font Awesome](https://fontawesome.com/)
+- [Google Fonts](https://fonts.google.com/)
