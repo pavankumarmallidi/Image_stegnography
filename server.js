@@ -26,8 +26,13 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Something went wrong!' });
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`🚀 Image Steganography Server running on port ${PORT}`);
-    console.log(`📱 Open your browser to http://localhost:${PORT}`);
-}); 
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`🚀 Image Steganography Server running on port ${PORT}`);
+        console.log(`📱 Open your browser to http://localhost:${PORT}`);
+    });
+}
+
+// Export the Express API for Vercel
+module.exports = app; 
