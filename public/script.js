@@ -3,7 +3,6 @@ class SteganographyApp {
         this.initializeElements();
         this.attachEventListeners();
         this.currentMode = 'encode';
-        this.initializeTheme();
         this.initializeNavigation();
     }
 
@@ -13,7 +12,6 @@ class SteganographyApp {
         this.navLinks = document.querySelectorAll('.nav-link');
         this.hamburger = document.querySelector('.hamburger');
         this.navMenu = document.querySelector('.nav-menu');
-        this.themeToggle = document.getElementById('theme-toggle');
         
         // Mode buttons
         this.encodeModeBtn = document.querySelector('[data-mode="encode"]');
@@ -55,9 +53,6 @@ class SteganographyApp {
             link.addEventListener('click', (e) => this.handleNavClick(e));
         });
         
-        // Theme toggle
-        this.themeToggle.addEventListener('click', () => this.toggleTheme());
-        
         // Mode switching
         this.encodeModeBtn.addEventListener('click', () => this.switchMode('encode'));
         this.decodeModeBtn.addEventListener('click', () => this.switchMode('decode'));
@@ -81,33 +76,12 @@ class SteganographyApp {
         this.initializeDragAndDrop();
     }
 
-    initializeTheme() {
-        // Check for saved theme preference or default to light
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        this.setTheme(savedTheme);
-    }
-
     initializeNavigation() {
         // Update active navigation based on current section
         this.updateActiveNavigation();
         
         // Smooth scroll for anchor links
         this.initializeSmoothScroll();
-    }
-
-    toggleTheme() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        this.setTheme(newTheme);
-    }
-
-    setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-        
-        // Update theme toggle icon
-        const icon = this.themeToggle.querySelector('i');
-        icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
     }
 
     toggleMobileMenu() {
@@ -159,9 +133,17 @@ class SteganographyApp {
     handleScroll() {
         // Update navigation background opacity
         const scrollY = window.scrollY;
-        this.navbar.style.background = scrollY > 50 ? 
-            'rgba(255, 255, 255, 0.95)' : 
-            'rgba(255, 255, 255, 0.1)';
+        const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+        
+        if (isDarkMode) {
+            this.navbar.style.background = scrollY > 50 ? 
+                'rgba(26, 32, 44, 0.95)' : 
+                'rgba(26, 32, 44, 0.1)';
+        } else {
+            this.navbar.style.background = scrollY > 50 ? 
+                'rgba(255, 255, 255, 0.95)' : 
+                'rgba(255, 255, 255, 0.1)';
+        }
         
         // Update active navigation based on scroll position
         this.updateActiveNavigation();
