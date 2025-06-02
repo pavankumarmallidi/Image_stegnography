@@ -403,24 +403,61 @@ textarea:focus {
     gap: 1rem;
     margin-bottom: 2rem;
     justify-content: center;
+    padding: 1rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .mode-btn {
     padding: 1rem 2rem;
-    border: none;
+    border: 2px solid var(--primary-color);
     border-radius: 8px;
-    background: var(--card-bg);
+    background: var(--background-color);
     color: var(--text-color);
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-weight: 600;
+    min-width: 200px;
+    justify-content: center;
+}
+
+.mode-btn i {
+    font-size: 1.2rem;
+}
+
+.mode-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .mode-btn.active {
     background: var(--primary-color);
     color: white;
+}
+
+/* Tool Sections */
+.tool-section {
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.tool-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Image Preview */

@@ -4,6 +4,7 @@ class SteganographyApp {
         this.attachEventListeners();
         this.currentMode = 'encode';
         this.initializeNavigation();
+        this.initializeMode();
     }
 
     initializeElements() {
@@ -44,6 +45,15 @@ class SteganographyApp {
         
         // Toast container
         this.toastContainer = document.getElementById('toast-container');
+    }
+
+    initializeMode() {
+        // Set initial mode
+        this.switchMode(this.currentMode);
+        
+        // Show initial section
+        this.encodeSection.classList.add('active');
+        this.decodeSection.classList.remove('active');
     }
 
     attachEventListeners() {
@@ -289,55 +299,52 @@ class SteganographyApp {
     async handleEncode(event) {
         event.preventDefault();
         
-        const formData = new FormData(this.encodeForm);
-        const message = formData.get('message');
+        const imageFile = this.encodeImageInput.files[0];
+        const message = this.messageTextarea.value.trim();
         
-        if (!message.trim()) {
-            this.showToast('Please enter a message to encode', 'error');
+        if (!imageFile) {
+            this.showToast('Please select an image file', 'error');
             return;
         }
         
-        if (!formData.get('image')) {
-            this.showToast('Please select an image', 'error');
+        if (!message) {
+            this.showToast('Please enter a message to hide', 'error');
             return;
         }
-        
-        this.showLoading(true);
         
         try {
+            this.showLoading(true);
+            
+            const formData = new FormData();
+            formData.append('image', imageFile);
+            formData.append('message', message);
+            
             const response = await fetch('/api/steganography/encode', {
                 method: 'POST',
                 body: formData
             });
             
-            if (response.ok) {
-                // Handle successful encoding
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                
-                // Create download link
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `encoded_${Date.now()}.png`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-                
-                this.showToast('Message encoded successfully! Download started.', 'success');
-                this.encodeForm.reset();
-                this.encodePreview.innerHTML = '';
-                this.updateCharCount();
-                
-                // Reset file input display
-                this.resetFileInputDisplay(this.encodeImageInput);
-            } else {
-                const errorData = await response.json();
-                this.showToast(errorData.error || 'Failed to encode message', 'error');
+            if (!response.ok) {
+                throw new Error('Failed to encode message');
             }
+            
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            
+            // Create download link
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = 'encoded_' + imageFile.name;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            
+            this.showToast('Message successfully hidden in image!', 'success');
+            this.resetForm(this.encodeForm);
+            
         } catch (error) {
             console.error('Encode error:', error);
-            this.showToast('Network error. Please try again.', 'error');
+            this.showToast('Failed to hide message: ' + error.message, 'error');
         } finally {
             this.showLoading(false);
         }
@@ -346,40 +353,43 @@ class SteganographyApp {
     async handleDecode(event) {
         event.preventDefault();
         
-        const formData = new FormData(this.decodeForm);
+        const imageFile = this.decodeImageInput.files[0];
         
-        if (!formData.get('image')) {
-            this.showToast('Please select an image to decode', 'error');
+        if (!imageFile) {
+            this.showToast('Please select an encoded image', 'error');
             return;
         }
         
-        this.showLoading(true);
-        this.decodedMessage.classList.remove('show');
-        
         try {
+            this.showLoading(true);
+            
+            const formData = new FormData();
+            formData.append('image', imageFile);
+            
             const response = await fetch('/api/steganography/decode', {
                 method: 'POST',
                 body: formData
             });
             
+            if (!response.ok) {
+                throw new Error('Failed to decode message');
+            }
+            
             const data = await response.json();
             
-            if (response.ok) {
-                // Display decoded message
-                const messageContent = this.decodedMessage.querySelector('.message-content');
-                messageContent.textContent = data.message;
-                this.decodedMessage.classList.add('show');
-                
-                this.showToast('Message decoded successfully!', 'success');
-                
-                // Add copy button
-                this.addCopyButton(messageContent);
-            } else {
-                this.showToast(data.error || 'Failed to decode message', 'error');
-            }
+            // Display decoded message
+            const messageContent = this.decodedMessage.querySelector('.message-content');
+            messageContent.textContent = data.message;
+            this.decodedMessage.classList.add('show');
+            
+            // Add copy button
+            this.addCopyButton(messageContent);
+            
+            this.showToast('Message successfully revealed!', 'success');
+            
         } catch (error) {
             console.error('Decode error:', error);
-            this.showToast('Network error. Please try again.', 'error');
+            this.showToast('Failed to reveal message: ' + error.message, 'error');
         } finally {
             this.showLoading(false);
         }
@@ -411,6 +421,17 @@ class SteganographyApp {
             this.showToast('Failed to send message. Please try again.', 'error');
         } finally {
             this.showLoading(false);
+        }
+    }
+
+    resetForm(form) {
+        form.reset();
+        const preview = form.id === 'encode-form' ? this.encodePreview : this.decodePreview;
+        preview.innerHTML = '';
+        this.resetFileInputDisplay(form.querySelector('input[type="file"]'));
+        if (form.id === 'encode-form') {
+            this.messageTextarea.value = '';
+            this.updateCharCount();
         }
     }
 
