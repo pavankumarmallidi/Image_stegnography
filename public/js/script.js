@@ -1,0 +1,589 @@
+class SteganographyApp {
+    constructor() {
+        // Initialize Steganography first
+        if (typeof Steganography === 'undefined') {
+            console.error('Steganography class not found. Make sure steganography.js is loaded before script.js');
+            return;
+        }
+        this.steganography = new Steganography();
+        
+        this.initializeElements();
+        this.attachEventListeners();
+        this.currentMode = 'encode';
+        this.initializeNavigation();
+        this.initializeMode();
+    }
+
+    initializeElements() {
+        // Navigation elements
+        this.navbar = document.querySelector('.navbar');
+        this.navLinks = document.querySelectorAll('.nav-link');
+        this.hamburger = document.querySelector('.hamburger');
+        this.navMenu = document.querySelector('.nav-menu');
+        
+        // Mode buttons - fix selectors to match HTML IDs
+        this.encodeModeBtn = document.getElementById('encode-mode');
+        this.decodeModeBtn = document.getElementById('decode-mode');
+        
+        // Sections
+        this.encodeSection = document.getElementById('encode-section');
+        this.decodeSection = document.getElementById('decode-section');
+        
+        // Forms
+        this.encodeForm = document.getElementById('encode-form');
+        this.decodeForm = document.getElementById('decode-form');
+        this.contactForm = document.getElementById('contact-form');
+        
+        // File inputs
+        this.encodeImageInput = document.getElementById('encode-image');
+        this.decodeImageInput = document.getElementById('decode-image');
+        
+        // File input displays
+        this.encodeFileDisplay = document.getElementById('encode-file-display');
+        this.decodeFileDisplay = document.getElementById('decode-file-display');
+        
+        // Message elements - fix selector to match HTML ID
+        this.messageTextarea = document.getElementById('message-text');
+        this.decodedMessage = document.getElementById('decoded-message');
+        
+        // Loading overlay
+        this.loadingOverlay = document.getElementById('loading-overlay');
+        
+        // Toast container
+        this.toastContainer = document.getElementById('toast-container');
+    }
+
+    initializeMode() {
+        // Set initial mode
+        this.switchMode(this.currentMode);
+        
+        // Show initial section
+        this.encodeSection.classList.add('active');
+        this.decodeSection.classList.remove('active');
+    }
+
+    attachEventListeners() {
+        // Navigation
+        if (this.hamburger) {
+            this.hamburger.addEventListener('click', () => this.toggleMobileMenu());
+        }
+        if (this.navLinks) {
+            this.navLinks.forEach(link => {
+                link.addEventListener('click', (e) => this.handleNavClick(e));
+            });
+        }
+        
+        // Mode switching
+        if (this.encodeModeBtn) {
+            this.encodeModeBtn.addEventListener('click', () => this.switchMode('encode'));
+        }
+        if (this.decodeModeBtn) {
+            this.decodeModeBtn.addEventListener('click', () => this.switchMode('decode'));
+        }
+        
+        // File input changes
+        if (this.encodeImageInput) {
+            this.encodeImageInput.addEventListener('change', (e) => this.handleImagePreview(e, this.encodeFileDisplay));
+        }
+        if (this.decodeImageInput) {
+            this.decodeImageInput.addEventListener('change', (e) => this.handleImagePreview(e, this.decodeFileDisplay));
+        }
+        
+        // Message character count - remove since it doesn't exist in HTML
+        if (this.messageTextarea) {
+            this.messageTextarea.addEventListener('input', () => this.updateCharCount());
+        }
+        
+        // Form submissions
+        if (this.encodeForm) {
+            this.encodeForm.addEventListener('submit', (e) => this.handleEncode(e));
+        }
+        if (this.decodeForm) {
+            this.decodeForm.addEventListener('submit', (e) => this.handleDecode(e));
+        }
+        if (this.contactForm) {
+            this.contactForm.addEventListener('submit', (e) => this.handleContactForm(e));
+        }
+        
+        // Scroll events
+        window.addEventListener('scroll', () => this.handleScroll());
+        
+        // File drag and drop
+        this.initializeDragAndDrop();
+    }
+
+    initializeNavigation() {
+        // Update active navigation based on current section
+        this.updateActiveNavigation();
+        
+        // Smooth scroll for anchor links
+        this.initializeSmoothScroll();
+    }
+
+    toggleMobileMenu() {
+        this.navMenu.classList.toggle('active');
+        this.hamburger.classList.toggle('active');
+    }
+
+    handleNavClick(e) {
+        e.preventDefault();
+        const href = e.target.getAttribute('href');
+        
+        if (href.startsWith('#')) {
+            const targetId = href.substring(1);
+            const targetElement = document.getElementById(targetId);
+            
+            if (targetElement) {
+                const offsetTop = targetElement.offsetTop - 80; // Account for fixed header
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        }
+        
+        // Close mobile menu if open
+        this.navMenu.classList.remove('active');
+        this.hamburger.classList.remove('active');
+    }
+
+    initializeSmoothScroll() {
+        // Add smooth scrolling to all anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = anchor.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    }
+
+    handleScroll() {
+        // Update navigation background opacity
+        const scrollY = window.scrollY;
+        this.navbar.style.background = scrollY > 50 ? 
+            'rgba(255, 255, 255, 0.95)' : 
+            'rgba(255, 255, 255, 0.1)';
+        
+        // Update active navigation based on scroll position
+        this.updateActiveNavigation();
+    }
+
+    updateActiveNavigation() {
+        const sections = ['home', 'features', 'app', 'about', 'contact'];
+        let currentSection = 'home';
+        
+        sections.forEach(sectionId => {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                    currentSection = sectionId;
+                }
+            }
+        });
+        
+        // Update active nav link
+        this.navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${currentSection}`) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    initializeDragAndDrop() {
+        [this.encodeImageInput, this.decodeImageInput].forEach(input => {
+            const wrapper = input.closest('.file-input-wrapper');
+            const display = wrapper.querySelector('.file-input-display');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                wrapper.addEventListener(eventName, this.preventDefaults, false);
+            });
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                wrapper.addEventListener(eventName, () => display.classList.add('drag-over'), false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                wrapper.addEventListener(eventName, () => display.classList.remove('drag-over'), false);
+            });
+            
+            wrapper.addEventListener('drop', (e) => this.handleDrop(e, input), false);
+        });
+    }
+
+    preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    handleDrop(e, input) {
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            input.files = files;
+            const event = new Event('change', { bubbles: true });
+            input.dispatchEvent(event);
+        }
+    }
+
+    switchMode(mode) {
+        this.currentMode = mode;
+        
+        // Update mode buttons
+        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`${mode}-mode`).classList.add('active');
+        
+        // Update sections
+        document.querySelectorAll('.tool-section').forEach(section => section.classList.remove('active'));
+        document.getElementById(`${mode}-section`).classList.add('active');
+        
+        // Hide decoded message when switching modes
+        if (this.decodedMessage) {
+            this.decodedMessage.classList.remove('show');
+        }
+    }
+
+    handleImagePreview(event, displayElement) {
+        const file = event.target.files[0];
+        
+        if (file) {
+            // Validate file type
+            if (!file.type.match(/^image\/(jpeg|jpg|png)$/)) {
+                this.showToast('Please select a valid image file (PNG, JPG, JPEG)', 'error');
+                event.target.value = '';
+                return;
+            }
+            
+            // Validate file size (10MB max)
+            if (file.size > 10 * 1024 * 1024) {
+                this.showToast('File size too large. Maximum size is 10MB', 'error');
+                event.target.value = '';
+                return;
+            }
+            
+            // Update file input display
+            displayElement.innerHTML = `
+                <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                <div class="upload-text" style="color: #10b981;">File selected: ${file.name}</div>
+                <div class="upload-hint">${this.formatFileSize(file.size)} - Ready to process</div>
+            `;
+        } else {
+            // Reset display
+            this.resetFileInputDisplay(event.target);
+        }
+    }
+
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    updateCharCount() {
+        if (!this.messageTextarea) return;
+        
+        const count = this.messageTextarea.value.length;
+        
+        // Only update char count if element exists (it doesn't in current HTML)
+        const charCountElement = document.getElementById('char-count');
+        if (charCountElement) {
+            charCountElement.textContent = count;
+            
+            // Add visual feedback for character count
+            if (count > 1000) {
+                charCountElement.style.color = '#ef4444';
+            } else if (count > 500) {
+                charCountElement.style.color = '#f59e0b';
+            } else {
+                charCountElement.style.color = 'var(--text-muted)';
+            }
+        }
+    }
+
+    async handleEncode(event) {
+        event.preventDefault();
+        
+        const imageFile = this.encodeImageInput.files[0];
+        const message = this.messageTextarea.value.trim();
+        
+        if (!imageFile) {
+            this.showToast('Please select an image file', 'error');
+            return;
+        }
+        
+        if (!message) {
+            this.showToast('Please enter a message to hide', 'error');
+            return;
+        }
+        
+        try {
+            this.showLoading(true);
+            console.log('Starting encoding process...');
+            
+            // Use the steganography class to encode the message
+            const encodedImageBlob = await this.steganography.encode(imageFile, message);
+            console.log('Encoding completed successfully');
+                
+            // Create download link
+            const url = window.URL.createObjectURL(encodedImageBlob);
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = 'encoded_' + imageFile.name;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+                
+            this.showToast('Message successfully hidden in image!', 'success');
+            this.resetForm(this.encodeForm);
+            
+        } catch (error) {
+            console.error('Encode error:', error);
+            this.showToast('Failed to hide message: ' + error.message, 'error');
+        } finally {
+            this.showLoading(false);
+        }
+    }
+
+    async handleDecode(event) {
+        event.preventDefault();
+        
+        const imageFile = this.decodeImageInput.files[0];
+        
+        if (!imageFile) {
+            this.showToast('Please select an encoded image', 'error');
+            return;
+        }
+        
+        try {
+            this.showLoading(true);
+            
+            // Use the steganography class to decode the message
+            const decodedMessage = await this.steganography.decode(imageFile);
+            
+            // Display decoded message
+            const messageContent = document.getElementById('decoded-content');
+            messageContent.textContent = decodedMessage;
+            this.decodedMessage.classList.add('show');
+            
+            this.showToast('Message successfully revealed!', 'success');
+            
+        } catch (error) {
+            console.error('Decode error:', error);
+            this.showToast('Failed to reveal message: ' + error.message, 'error');
+        } finally {
+            this.showLoading(false);
+        }
+    }
+
+    async handleContactForm(event) {
+        event.preventDefault();
+        
+        const formData = new FormData(this.contactForm);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const message = formData.get('message');
+        
+        if (!name.trim() || !email.trim() || !message.trim()) {
+            this.showToast('Please fill in all fields', 'error');
+            return;
+        }
+        
+        this.showLoading(true);
+        
+        // Simulate form submission (replace with actual endpoint)
+        try {
+            // In a real application, you would send this to your backend
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            this.showToast('Message sent successfully! We\'ll get back to you soon.', 'success');
+            this.contactForm.reset();
+        } catch (error) {
+            this.showToast('Failed to send message. Please try again.', 'error');
+        } finally {
+            this.showLoading(false);
+        }
+    }
+
+    resetForm(form) {
+        form.reset();
+        const fileInput = form.querySelector('input[type="file"]');
+        if (fileInput) {
+            this.resetFileInputDisplay(fileInput);
+        }
+        
+        if (form.id === 'encode-form' && this.messageTextarea) {
+            this.messageTextarea.value = '';
+            this.updateCharCount();
+        }
+    }
+
+    resetFileInputDisplay(input) {
+        const wrapper = input.closest('.file-input-wrapper');
+        const display = wrapper.querySelector('.file-input-display');
+        
+        const isDecodeInput = input.id.includes('decode');
+        
+        display.innerHTML = `
+            <i class="fas fa-${isDecodeInput ? 'search' : 'cloud-upload-alt'}"></i>
+            <div class="upload-text">${isDecodeInput ? 'Choose Encoded Image' : 'Choose Image File'}</div>
+            <div class="upload-hint">Drag & drop or click to select${isDecodeInput ? '' : ' (PNG, JPG, JPEG)'}</div>
+        `;
+    }
+
+    addCopyButton(messageContent) {
+        // Remove existing copy button if any
+        const existingBtn = this.decodedMessage.querySelector('.copy-btn');
+        if (existingBtn) existingBtn.remove();
+        
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'btn btn-secondary copy-btn';
+        copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Message';
+        copyBtn.style.marginTop = '1rem';
+        
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(messageContent.textContent).then(() => {
+                this.showToast('Message copied to clipboard!', 'success');
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Message';
+                }, 2000);
+            }).catch(() => {
+                this.showToast('Failed to copy message', 'error');
+            });
+        });
+        
+        this.decodedMessage.appendChild(copyBtn);
+    }
+
+    showLoading(show) {
+        if (show) {
+            this.loadingOverlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        } else {
+            this.loadingOverlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    }
+
+    showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        const icon = type === 'success' ? 'fas fa-check-circle' : 
+                    type === 'error' ? 'fas fa-exclamation-circle' : 
+                    'fas fa-info-circle';
+        
+        toast.innerHTML = `
+            <i class="${icon}"></i>
+            <span>${message}</span>
+        `;
+        
+        this.toastContainer.appendChild(toast);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        this.toastContainer.removeChild(toast);
+                    }
+                }, 300);
+            }
+        }, 5000);
+        
+        // Allow manual close
+        toast.addEventListener('click', () => {
+            if (toast.parentNode) {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        this.toastContainer.removeChild(toast);
+                    }
+                }, 300);
+            }
+        });
+    }
+}
+
+// Global function for copy button in HTML
+function copyDecodedMessage() {
+    const messageContent = document.getElementById('decoded-content');
+    if (messageContent && messageContent.textContent) {
+        navigator.clipboard.writeText(messageContent.textContent).then(() => {
+            if (window.steganographyApp) {
+                window.steganographyApp.showToast('Message copied to clipboard!', 'success');
+            }
+        }).catch(() => {
+            if (window.steganographyApp) {
+                window.steganographyApp.showToast('Failed to copy message', 'error');
+            }
+        });
+    }
+}
+
+// Initialize the app when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Check if app is already initialized
+    if (window.steganographyApp) {
+        console.log('SteganographyApp already initialized');
+        return;
+    }
+    
+    try {
+        // Initialize the app
+        window.steganographyApp = new SteganographyApp();
+    } catch (error) {
+        console.error('Failed to initialize SteganographyApp:', error);
+    }
+});
+
+// Scroll animations for elements
+function addScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Observe elements for animation
+    document.querySelectorAll('.feature-card, .tech-item, .contact-item').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'all 0.6s ease';
+        observer.observe(el);
+    });
+}
+
+// Subtle parallax effect for hero section
+function addParallaxEffect() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+    
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.5;
+        hero.style.transform = `translateY(${rate}px)`;
+    });
+} 

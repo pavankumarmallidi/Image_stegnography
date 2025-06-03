@@ -13,37 +13,59 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
 
 // Configure multer for file uploads
 const storage = multer.memoryStorage();
-const upload = multer({ 
+const upload = multer({
     storage: storage,
     limits: {
         fileSize: 10 * 1024 * 1024 // 10MB limit
+    },
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith('image/')) {
+            cb(null, true);
+        } else {
+            cb(new Error('Only image files are allowed!'), false);
+        }
     }
 });
 
 // Routes
 app.use('/api/steganography', steganographyRoutes);
 
-// Serve static files from organized folders
-app.use('/css', express.static(path.join(__dirname, 'css')));
-app.use('/js', express.static(path.join(__dirname, 'js')));
-app.use('/html', express.static(path.join(__dirname, 'html')));
+// Serve static files from public directory (for Vercel deployment)
+app.use(express.static('public'));
 
-// Root route serves index.html
+// Also serve static files from organized directories (for local development)
+app.use('/css', express.static('css'));
+app.use('/js', express.static('js'));
+app.use('/html', express.static('html'));
+
+// Routes for HTML pages
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html', 'index.html'));
+    // Try public first (for Vercel), then html directory (for local)
+    if (fs.existsSync(path.join(__dirname, 'public', 'index.html'))) {
+        res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    } else {
+        res.sendFile(path.join(__dirname, 'html', 'index.html'));
+    }
 });
 
-// Serve HTML files directly from root path (without /html prefix)
-app.get('/:page.html', (req, res) => {
+app.get('/:page', (req, res) => {
     const page = req.params.page;
-    const htmlPath = path.join(__dirname, 'html', `${page}.html`);
     
-    // Check if file exists
-    if (fs.existsSync(htmlPath)) {
+    // Security: Only allow .html files and prevent directory traversal
+    if (!page.endsWith('.html') || page.includes('..') || page.includes('/')) {
+        return res.status(404).send('Page not found');
+    }
+    
+    // Try public first (for Vercel), then html directory (for local)
+    const publicPath = path.join(__dirname, 'public', page);
+    const htmlPath = path.join(__dirname, 'html', page);
+    
+    if (fs.existsSync(publicPath)) {
+        res.sendFile(publicPath);
+    } else if (fs.existsSync(htmlPath)) {
         res.sendFile(htmlPath);
     } else {
         res.status(404).send('Page not found');
