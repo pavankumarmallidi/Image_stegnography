@@ -1,54 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SteganoCrypt - Hide Messages in Images</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
     <!-- Floating Objects -->
-    <div class="floating-objects">
-        <div class="floating-object"></div>
-        <div class="floating-object"></div>
-        <div class="floating-object"></div>
-        <div class="floating-object"></div>
-    </div>
-
-    <!-- Theme Toggle -->
-    <button class="theme-toggle" id="themeToggle">
-        <i class="fas fa-moon"></i>
-    </button>
+    <!-- Removed unnecessary floating-objects and hero-visual elements for a cleaner look -->
 
     <!-- Header/Navigation -->
-    <header class="header">
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="nav-logo">
+    <header>
+        <nav>
+            <div>
+                <div>
                     <i class="fas fa-shield-alt"></i>
                     <span>SteganoCrypt</span>
                 </div>
                 
-                <ul class="nav-menu">
-                    <li class="nav-item">
-                        <a href="#home" class="nav-link active">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#features" class="nav-link">Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="steganography.html" class="nav-link">Try App</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#about" class="nav-link">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#contact" class="nav-link">Contact</a>
-                    </li>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="features.html">Features</a></li>
+                    <li><a href="steganography.html">SteganoCrypt App</a></li>
+                    <li><a href="how-it-works.html">How It Works</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
                 </ul>
 
-                <div class="nav-controls">
+                <div>
                     <div class="hamburger">
                         <span class="bar"></span>
                         <span class="bar"></span>
@@ -62,233 +44,113 @@
     <!-- Main Content -->
     <main>
         <!-- Hero Section -->
-        <section id="home" class="hero">
-            <div class="hero-container">
-                <div class="hero-content">
-                    <h1 class="hero-title">
-                        Hide Messages in 
-                        <span class="gradient-text">Plain Sight</span>
-                    </h1>
-                    <p class="hero-description">
-                        Secure your communications with advanced steganography. Hide secret messages 
-                        inside ordinary images using military-grade encryption techniques.
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="steganography.html" class="btn btn-primary">
-                            <i class="fas fa-play"></i>
-                            Try It Now
-                        </a>
-                        <a href="#features" class="btn btn-secondary">
-                            <i class="fas fa-info-circle"></i>
-                            Learn More
-                        </a>
-                    </div>
-                    <div class="hero-stats">
-                        <div class="stat">
-                            <span class="stat-number">256-bit</span>
-                            <span class="stat-label">Encryption</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">100%</span>
-                            <span class="stat-label">Invisible</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">Zero</span>
-                            <span class="stat-label">Traces</span>
-                        </div>
-                    </div>
+        <section id="home" class="card">
+            <h1>Hide Messages in Plain Sight</h1>
+            <p>Secure your communications with advanced steganography. Hide secret messages inside ordinary images using military-grade encryption techniques.</p>
+            <div style="margin-bottom:1.5rem;">
+                <a href="steganography.html" class="btn">SteganoCrypt App</a>
+                <a href="features.html" class="btn" style="background:var(--bg-card);color:var(--accent);margin-left:1rem;">Learn More</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">256-bit</span>
+                    <span class="stat-label">Encryption</span>
                 </div>
-                <div class="hero-image">
-                    <div class="hero-visual">
-                        <div class="floating-card">
-                            <i class="fas fa-image"></i>
-                            <span>Original Image</span>
-                        </div>
-                        <div class="floating-card">
-                            <i class="fas fa-lock"></i>
-                            <span>Hidden Message</span>
-                        </div>
-                        <div class="floating-card">
-                            <i class="fas fa-eye-slash"></i>
-                            <span>Invisible Result</span>
-                        </div>
-                    </div>
+                <div class="stat">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Invisible</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">Zero</span>
+                    <span class="stat-label">Traces</span>
                 </div>
             </div>
         </section>
 
         <!-- Features Section -->
-        <section id="features" class="features">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Powerful Features</h2>
-                    <p class="section-description">
-                        Advanced steganography made simple with cutting-edge technology
-                    </p>
+        <section id="features" class="card">
+            <h2>Powerful Features</h2>
+            <p>Advanced steganography made simple with cutting-edge technology</p>
+            <div style="display:flex;flex-wrap:wrap;gap:1.5rem;">
+                <div class="feature-card" style="flex:1 1 220px;min-width:220px;">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Military-Grade Security</h3>
+                    <p>Uses LSB steganography with advanced algorithms to ensure your messages remain completely hidden and secure.</p>
                 </div>
-                
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h3>Military-Grade Security</h3>
-                        <p>Uses LSB steganography with advanced algorithms to ensure your messages remain completely hidden and secure.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-eye-slash"></i>
-                        </div>
-                        <h3>Invisible Encoding</h3>
-                        <p>Messages are embedded without any visible changes to the original image, making detection nearly impossible.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <h3>Lightning Fast</h3>
-                        <p>Process images in seconds with our optimized algorithms. No waiting, just instant secure communication.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <h3>Universal Compatibility</h3>
-                        <p>Works with PNG, JPG, and JPEG formats across all devices and platforms. No software installation required.</p>
-                    </div>
+                <div class="feature-card" style="flex:1 1 220px;min-width:220px;">
+                    <i class="fas fa-eye-slash"></i>
+                    <h3>Invisible Encoding</h3>
+                    <p>Messages are embedded without any visible changes to the original image, making detection nearly impossible.</p>
+                </div>
+                <div class="feature-card" style="flex:1 1 220px;min-width:220px;">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Lightning Fast</h3>
+                    <p>Process images in seconds with our optimized algorithms. No waiting, just instant secure communication.</p>
+                </div>
+                <div class="feature-card" style="flex:1 1 220px;min-width:220px;">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Universal Compatibility</h3>
+                    <p>Works with PNG, JPG, and JPEG formats across all devices and platforms. No software installation required.</p>
                 </div>
             </div>
         </section>
 
         <!-- About Section -->
-        <section id="about" class="about">
-            <div class="container">
-                <div class="about-content">
-                    <div class="about-text">
-                        <h2 class="section-title">About Steganography</h2>
-                        <p>
-                            Steganography is the practice of concealing information within another message or physical object. 
-                            Unlike cryptography, which scrambles data to make it unreadable, steganography hides the very 
-                            existence of the message.
-                        </p>
-                        <p>
-                            Our application uses LSB (Least Significant Bit) steganography to embed text messages into 
-                            image pixels. This technique modifies the least significant bits of pixel values, creating 
-                            changes so subtle they're invisible to the human eye.
-                        </p>
-                        <div class="about-stats">
-                            <div class="about-stat">
-                                <span class="stat-number">0.0001%</span>
-                                <span class="stat-label">Pixel Change</span>
-                            </div>
-                            <div class="about-stat">
-                                <span class="stat-number">∞</span>
-                                <span class="stat-label">Security Levels</span>
-                            </div>
-                        </div>
+        <section id="about" class="card">
+            <h2>About Steganography</h2>
+            <p>Steganography is the practice of concealing information within another message or physical object. Unlike cryptography, which scrambles data to make it unreadable, steganography hides the very existence of the message.</p>
+            <p>Our application uses LSB (Least Significant Bit) steganography to embed text messages into image pixels. This technique modifies the least significant bits of pixel values, creating changes so subtle they're invisible to the human eye.</p>
+            <div class="about-stats">
+                <div class="about-stat">
+                    <span class="stat-number">0.0001%</span>
+                    <span class="stat-label">Pixel Change</span>
+                </div>
+                <div class="about-stat">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">Security Levels</span>
+                </div>
+            </div>
+            <div class="about-visual">
+                <div class="tech-showcase">
+                    <div class="tech-item">
+                        <i class="fab fa-js-square"></i>
+                        <span>JavaScript</span>
                     </div>
-                    <div class="about-visual">
-                        <div class="tech-showcase">
-                            <div class="tech-item">
-                                <i class="fab fa-js-square"></i>
-                                <span>JavaScript</span>
-                            </div>
-                            <div class="tech-item">
-                                <i class="fab fa-node-js"></i>
-                                <span>Node.js</span>
-                            </div>
-                            <div class="tech-item">
-                                <i class="fas fa-server"></i>
-                                <span>Express</span>
-                            </div>
-                            <div class="tech-item">
-                                <i class="fas fa-image"></i>
-                                <span>Sharp</span>
-                            </div>
-                        </div>
+                    <div class="tech-item">
+                        <i class="fab fa-node-js"></i>
+                        <span>Node.js</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-server"></i>
+                        <span>Express</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-image"></i>
+                        <span>Sharp</span>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="contact">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Get In Touch</h2>
-                    <p class="section-description">
-                        Have questions about steganography or need help with the application?
-                    </p>
+        <section id="contact" class="card">
+            <h2>Get In Touch</h2>
+            <p>Have questions about steganography or need help with the application?</p>
+            <form id="contact-form">
+                <div>
+                    <label for="contact-name"><i class="fas fa-user"></i> Your Name</label>
+                    <input type="text" id="contact-name" name="name" required>
                 </div>
-                
-                <div class="contact-content">
-                    <div class="contact-info">
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="contact-details">
-                                <h4>Email Us</h4>
-                                <p>hello@steganocrypt.com</p>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <div class="contact-details">
-                                <h4>Security</h4>
-                                <p>Report security issues</p>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-code"></i>
-                            </div>
-                            <div class="contact-details">
-                                <h4>Open Source</h4>
-                                <p>Contribute on GitHub</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <form class="contact-form" id="contact-form">
-                        <div class="form-group">
-                            <label for="contact-name">
-                                <i class="fas fa-user"></i>
-                                Your Name
-                            </label>
-                            <input type="text" id="contact-name" name="name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="contact-email">
-                                <i class="fas fa-envelope"></i>
-                                Email Address
-                            </label>
-                            <input type="email" id="contact-email" name="email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="contact-message">
-                                <i class="fas fa-comment"></i>
-                                Message
-                            </label>
-                            <textarea id="contact-message" name="message" rows="5" placeholder="Your message here..." required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary btn-large">
-                            <i class="fas fa-paper-plane"></i>
-                            Send Message
-                        </button>
-                    </form>
+                <div>
+                    <label for="contact-email"><i class="fas fa-envelope"></i> Email Address</label>
+                    <input type="email" id="contact-email" name="email" required>
                 </div>
-            </div>
+                <div>
+                    <label for="contact-message"><i class="fas fa-comment"></i> Message</label>
+                    <textarea id="contact-message" name="message" rows="5" placeholder="Your message here..." required></textarea>
+                </div>
+                <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Send Message</button>
+            </form>
         </section>
     </main>
 
@@ -318,30 +180,30 @@
                 <div class="footer-section">
                     <h4>Product</h4>
                     <ul class="footer-links">
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="steganography.html">Try App</a></li>
-                        <li><a href="#about">How It Works</a></li>
-                        <li><a href="#">Documentation</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="steganography.html">SteganoCrypt App</a></li>
+                        <li><a href="how-it-works.html">How It Works</a></li>
+                        <li><a href="documentation.html">Documentation</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
                     <h4>Company</h4>
                     <ul class="footer-links">
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
                     <h4>Security</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Security Audit</a></li>
-                        <li><a href="#">Bug Bounty</a></li>
-                        <li><a href="#">Responsible Disclosure</a></li>
-                        <li><a href="#">Encryption Standards</a></li>
+                        <li><a href="security-audit.html">Security Audit</a></li>
+                        <li><a href="bug-bounty.html">Bug Bounty</a></li>
+                        <li><a href="responsible-disclosure.html">Responsible Disclosure</a></li>
+                        <li><a href="encryption-standards.html">Encryption Standards</a></li>
                     </ul>
                 </div>
             </div>
@@ -353,40 +215,10 @@
     </footer>
 
     <!-- Loading Overlay -->
-    <div id="loading-overlay" class="loading-overlay">
-        <div class="loading-content">
-            <div class="spinner"></div>
-            <p>Processing your request...</p>
-        </div>
-    </div>
+    <!-- Removed spinner and toast-container for minimal UI -->
 
-    <!-- Toast Notifications -->
-    <div id="toast-container" class="toast-container"></div>
-
-    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <script src="steganography.js"></script>
     <script src="script.js"></script>
-    <script>
-        // Theme Toggle Functionality
-        const themeToggle = document.getElementById('themeToggle');
-        const html = document.documentElement;
-        const themeIcon = themeToggle.querySelector('i');
-
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            html.setAttribute('data-theme', newTheme);
-            themeIcon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-            
-            // Save theme preference
-            localStorage.setItem('theme', newTheme);
-        });
-
-        // Load saved theme preference
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        html.setAttribute('data-theme', savedTheme);
-        themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-    </script>
 </body>
 </html> 

@@ -26,8 +26,13 @@ class Steganography {
     // Encode message into image
     async encode(imageFile, message) {
         try {
+            console.log('Starting encode process...');
+            console.log('Image file:', imageFile);
+            console.log('Message length:', message.length);
+            
             // Create image element and load the file
             const img = await this.loadImage(imageFile);
+            console.log('Image loaded successfully:', img.width, 'x', img.height);
             
             // Set canvas dimensions to match image
             this.canvas.width = img.width;
@@ -35,13 +40,16 @@ class Steganography {
             
             // Draw image on canvas
             this.ctx.drawImage(img, 0, 0);
+            console.log('Image drawn to canvas');
             
             // Get image data
             const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
             const data = imageData.data;
+            console.log('Image data retrieved, total pixels:', data.length / 4);
             
             // Convert message to binary and add delimiter
             const binaryMessage = this.textToBinary(message) + '1111111111111110';
+            console.log('Message converted to binary, length:', binaryMessage.length);
             
             // Check if image is large enough
             const maxMessageLength = Math.floor((this.canvas.width * this.canvas.height * 3) / 8) - 1;
@@ -61,18 +69,22 @@ class Steganography {
                     messageIndex++;
                 }
             }
+            console.log('Message encoded into image data');
             
             // Put modified data back on canvas
             this.ctx.putImageData(imageData, 0, 0);
+            console.log('Modified data put back on canvas');
             
             // Convert canvas to blob
             return new Promise((resolve) => {
                 this.canvas.toBlob((blob) => {
+                    console.log('Canvas converted to blob, size:', blob.size);
                     resolve(blob);
                 }, 'image/png');
             });
             
         } catch (error) {
+            console.error('Encoding error details:', error);
             throw new Error(`Encoding failed: ${error.message}`);
         }
     }

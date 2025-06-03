@@ -1,11 +1,17 @@
 class SteganographyApp {
     constructor() {
+        // Initialize Steganography first
+        if (typeof Steganography === 'undefined') {
+            console.error('Steganography class not found. Make sure steganography.js is loaded before script.js');
+            return;
+        }
+        this.steganography = new Steganography();
+        
         this.initializeElements();
         this.attachEventListeners();
         this.currentMode = 'encode';
         this.initializeNavigation();
         this.initializeMode();
-        this.steganography = new Steganography();
     }
 
     initializeElements() {
@@ -59,26 +65,46 @@ class SteganographyApp {
 
     attachEventListeners() {
         // Navigation
-        this.hamburger.addEventListener('click', () => this.toggleMobileMenu());
-        this.navLinks.forEach(link => {
-            link.addEventListener('click', (e) => this.handleNavClick(e));
-        });
+        if (this.hamburger) {
+            this.hamburger.addEventListener('click', () => this.toggleMobileMenu());
+        }
+        if (this.navLinks) {
+            this.navLinks.forEach(link => {
+                link.addEventListener('click', (e) => this.handleNavClick(e));
+            });
+        }
         
         // Mode switching
-        this.encodeModeBtn.addEventListener('click', () => this.switchMode('encode'));
-        this.decodeModeBtn.addEventListener('click', () => this.switchMode('decode'));
+        if (this.encodeModeBtn) {
+            this.encodeModeBtn.addEventListener('click', () => this.switchMode('encode'));
+        }
+        if (this.decodeModeBtn) {
+            this.decodeModeBtn.addEventListener('click', () => this.switchMode('decode'));
+        }
         
         // File input changes
-        this.encodeImageInput.addEventListener('change', (e) => this.handleImagePreview(e, this.encodePreview));
-        this.decodeImageInput.addEventListener('change', (e) => this.handleImagePreview(e, this.decodePreview));
+        if (this.encodeImageInput) {
+            this.encodeImageInput.addEventListener('change', (e) => this.handleImagePreview(e, this.encodePreview));
+        }
+        if (this.decodeImageInput) {
+            this.decodeImageInput.addEventListener('change', (e) => this.handleImagePreview(e, this.decodePreview));
+        }
         
         // Message character count
-        this.messageTextarea.addEventListener('input', () => this.updateCharCount());
+        if (this.messageTextarea) {
+            this.messageTextarea.addEventListener('input', () => this.updateCharCount());
+        }
         
         // Form submissions
-        this.encodeForm.addEventListener('submit', (e) => this.handleEncode(e));
-        this.decodeForm.addEventListener('submit', (e) => this.handleDecode(e));
-        this.contactForm.addEventListener('submit', (e) => this.handleContactForm(e));
+        if (this.encodeForm) {
+            this.encodeForm.addEventListener('submit', (e) => this.handleEncode(e));
+        }
+        if (this.decodeForm) {
+            this.decodeForm.addEventListener('submit', (e) => this.handleDecode(e));
+        }
+        if (this.contactForm) {
+            this.contactForm.addEventListener('submit', (e) => this.handleContactForm(e));
+        }
         
         // Scroll events
         window.addEventListener('scroll', () => this.handleScroll());
@@ -144,17 +170,9 @@ class SteganographyApp {
     handleScroll() {
         // Update navigation background opacity
         const scrollY = window.scrollY;
-        const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
-        
-        if (isDarkMode) {
-            this.navbar.style.background = scrollY > 50 ? 
-                'rgba(26, 32, 44, 0.95)' : 
-                'rgba(26, 32, 44, 0.1)';
-        } else {
-            this.navbar.style.background = scrollY > 50 ? 
-                'rgba(255, 255, 255, 0.95)' : 
-                'rgba(255, 255, 255, 0.1)';
-        }
+        this.navbar.style.background = scrollY > 50 ? 
+            'rgba(255, 255, 255, 0.95)' : 
+            'rgba(255, 255, 255, 0.1)';
         
         // Update active navigation based on scroll position
         this.updateActiveNavigation();
@@ -314,12 +332,14 @@ class SteganographyApp {
         }
         
         try {
-        this.showLoading(true);
-        
+            this.showLoading(true);
+            console.log('Starting encoding process...');
+            
             // Use the steganography class to encode the message
             const encodedImageBlob = await this.steganography.encode(imageFile, message);
+            console.log('Encoding completed successfully');
                 
-                // Create download link
+            // Create download link
             const url = window.URL.createObjectURL(encodedImageBlob);
             const downloadLink = document.createElement('a');
             downloadLink.href = url;
@@ -502,11 +522,18 @@ class SteganographyApp {
 
 // Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new SteganographyApp();
+    // Check if app is already initialized
+    if (window.steganographyApp) {
+        console.log('SteganographyApp already initialized');
+        return;
+    }
     
-    // Add some additional enhancements
-    addScrollAnimations();
-    addParallaxEffect();
+    try {
+        // Initialize the app
+        window.steganographyApp = new SteganographyApp();
+    } catch (error) {
+        console.error('Failed to initialize SteganographyApp:', error);
+    }
 });
 
 // Scroll animations for elements
