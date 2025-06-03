@@ -1,151 +1,184 @@
-# SteganoCrypt - Image Steganography Web Application
+# SteganoCrypt - Hide Messages in Plain Sight
 
-SteganoCrypt is a professional web application that allows users to hide and extract text messages within images using LSB (Least Significant Bit) steganography. The application provides a modern, responsive interface with dark/light mode support and beautiful animations.
-
-![SteganoCrypt Screenshot](https://via.placeholder.com/800x400?text=SteganoCrypt+Screenshot)
+A modern web application for secure communication through invisible messages using advanced steganography techniques.
 
 ## Features
 
-- **Hide Messages**: Conceal text within images using advanced LSB steganography
-- **Extract Messages**: Retrieve hidden messages from encoded images
-- **Modern UI**: Professional design with glassmorphism effects and smooth animations
-- **Dark/Light Mode**: Toggle between themes with persistent preferences
-- **Responsive Design**: Works on desktop, tablet, and mobile devices
-- **Drag & Drop**: Easy file upload with visual feedback
-- **Security**: Military-grade steganography algorithms
-- **Beautiful Animations**: Floating objects and smooth transitions
-- **Accessibility**: High contrast themes and keyboard navigation
+- **Military-Grade Security**: LSB steganography with advanced algorithms
+- **Invisible Encoding**: Messages embedded without visible changes to images
+- **Universal Compatibility**: Works with PNG, JPG, and JPEG formats
+- **Lightning Fast**: Process images in seconds
+- **Cross-Platform**: Works on all modern browsers and devices
+- **Privacy First**: All processing happens client-side
 
 ## Tech Stack
 
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
 - **Backend**: Node.js, Express.js
-- **Image Processing**: Sharp
-- **File Handling**: Multer
-- **Deployment**: Vercel
-- **Animations**: CSS3 Animations and Transitions
-- **Theme Management**: CSS Variables and LocalStorage
+- **Image Processing**: Sharp library for LSB steganography
+- **Frontend**: Vanilla JavaScript, Modern CSS
+- **Deployment**: Vercel-ready configuration
+
+## Project Structure
+
+```
+├── public/                 # Static assets and HTML pages
+│   ├── css/               # Stylesheets
+│   │   ├── base.css       # Global styles and theming
+│   │   ├── general.css    # General page components
+│   │   ├── index.css      # Homepage styles
+│   │   ├── contact.css    # Contact page styles
+│   │   └── steganography.css # Main app styles
+│   ├── js/                # JavaScript files
+│   │   ├── script.js      # Main application logic
+│   │   └── steganography.js # Steganography algorithms
+│   ├── index.html         # Homepage
+│   ├── steganography.html # Main application
+│   ├── about.html         # About page
+│   ├── contact.html       # Contact page
+│   ├── features.html      # Features overview
+│   ├── how-it-works.html  # Technical explanation
+│   ├── documentation.html # API documentation
+│   ├── privacy-policy.html
+│   ├── terms-of-service.html
+│   ├── security-audit.html
+│   ├── bug-bounty.html
+│   ├── responsible-disclosure.html
+│   └── encryption-standards.html
+├── server.js              # Express server
+├── package.json           # Dependencies and scripts
+├── vercel.json           # Vercel deployment config
+└── README.md             # This file
+```
 
 ## Local Development
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- npm (v6 or higher)
+- Node.js (version 14.0.0 or higher)
+- npm
 
 ### Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/steganocrypt.git
-   cd steganocrypt
-   ```
+```bash
+git clone <repository-url>
+cd Image_stegnography
+```
 
 2. Install dependencies:
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
 3. Start the development server:
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+```
 
-4. Open your browser and navigate to `http://localhost:3000`
+4. Open your browser to `http://localhost:3000`
 
-## Features in Detail
+### Production Build
 
-### Theme System
-- Automatic dark/light mode detection
-- Manual theme toggle with persistent preference
-- Smooth theme transitions
-- High contrast color schemes for accessibility
+```bash
+npm start
+```
 
-### Animations
-- Floating background objects
-- Smooth page transitions
-- Loading animations
-- Hover effects
-- Gradient text animations
+## Deployment
 
-### Security Features
-- LSB steganography implementation
-- Secure file handling
-- Input validation
-- Error handling
+### Vercel Deployment
 
-## Deployment to Vercel
+This project is optimized for Vercel deployment:
 
-### Option 1: Deploy via Vercel CLI
+1. **Install Vercel CLI** (optional):
+```bash
+npm install -g vercel
+```
 
-1. Install Vercel CLI:
-   ```bash
-   npm install -g vercel
-   ```
+2. **Deploy to Vercel**:
+```bash
+vercel
+```
 
-2. Login to Vercel:
-   ```bash
-   vercel login
-   ```
+Or connect your GitHub repository to Vercel for automatic deployments.
 
-3. Deploy the application:
-   ```bash
-   vercel
-   ```
+### Environment Variables
 
-4. For production deployment:
-   ```bash
-   vercel --prod
-   ```
+The application doesn't require environment variables for basic functionality.
 
-### Option 2: Deploy via Vercel Dashboard
+### Build Configuration
 
-1. Push your code to a GitHub repository
-2. Go to [Vercel Dashboard](https://vercel.com/dashboard)
-3. Click "New Project"
-4. Import your GitHub repository
-5. Configure project settings (if needed)
-6. Click "Deploy"
-
-## Environment Variables
-
-The application uses the following environment variables:
-
-- `PORT`: The port on which the server runs (default: 3000)
-- `NODE_ENV`: The environment (development/production)
+- `vercel.json` is pre-configured for optimal deployment
+- Static assets are served from the `public/` directory
+- API routes are handled by `server.js`
 
 ## API Endpoints
 
 ### Encode Message
-
 ```
-POST /api/steganography/encode
+POST /api/encode
+Content-Type: multipart/form-data
+
+Parameters:
+- image: File (PNG, JPG, JPEG)
+- message: String (text to hide)
+
+Response: Image file (PNG format)
 ```
-
-**Request:**
-- `image`: Image file (PNG, JPG, JPEG)
-- `message`: Text message to hide
-
-**Response:**
-- Encoded image file
 
 ### Decode Message
-
 ```
-POST /api/steganography/decode
+POST /api/decode
+Content-Type: multipart/form-data
+
+Parameters:
+- image: File (encoded image)
+
+Response: JSON { "message": "decoded text" }
 ```
 
-**Request:**
-- `image`: Encoded image file
+### Contact Form
+```
+POST /api/contact
+Content-Type: application/json
 
-**Response:**
-- `message`: Extracted text message
+Parameters:
+- name: String
+- email: String
+- message: String
+
+Response: JSON { "success": true, "message": "..." }
+```
+
+## Usage
+
+1. **Encoding Messages**:
+   - Navigate to the SteganoCrypt App
+   - Select "Encode Message"
+   - Upload an image (PNG, JPG, JPEG)
+   - Enter your secret message
+   - Download the encoded image
+
+2. **Decoding Messages**:
+   - Select "Decode Message"
+   - Upload an encoded image
+   - The hidden message will be revealed automatically
+
+## Security Features
+
+- **Client-side Processing**: Images never leave your device during processing
+- **LSB Steganography**: Messages hidden in least significant bits
+- **No Data Storage**: No images or messages stored on servers
+- **Invisible Changes**: Modifications are imperceptible to human eye
+
+## Technical Details
+
+- **Algorithm**: Least Significant Bit (LSB) steganography
+- **File Support**: PNG (recommended), JPG, JPEG
+- **Max File Size**: 10MB per image
+- **Message Capacity**: ~1 character per 8 pixels
+- **End Delimiter**: `1111111111111110` (binary)
 
 ## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
-
-### Development Guidelines
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
@@ -155,13 +188,16 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+- **General Questions**: contact@steganocrypt.com
+- **Security Issues**: security@steganocrypt.com
+- **Bug Reports**: Create an issue on GitHub
 
 ## Acknowledgments
 
-- [Express.js](https://expressjs.com/)
-- [Sharp](https://sharp.pixelplumbing.com/)
-- [Multer](https://github.com/expressjs/multer)
-- [Vercel](https://vercel.com/)
-- [Font Awesome](https://fontawesome.com/)
-- [Google Fonts](https://fonts.google.com/)
+- Sharp library for image processing
+- Font Awesome for icons
+- Express.js for the backend framework

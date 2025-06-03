@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "build": "echo 'Build completed'",
-    "vercel-build": "echo 'Vercel build completed'",
+    "build": "echo 'Static assets are already built'",
+    "vercel-build": "echo 'Vercel build completed - using static assets from public directory'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": ["steganography", "image", "security", "web", "express"],

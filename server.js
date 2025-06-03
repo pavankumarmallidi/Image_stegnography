@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const steganographyRoutes = require('./routes/steganography');
 const multer = require('multer');
 const sharp = require('sharp');
 const fs = require('fs');
@@ -30,25 +29,12 @@ const upload = multer({
     }
 });
 
-// Routes
-app.use('/api/steganography', steganographyRoutes);
-
-// Serve static files from public directory (for Vercel deployment)
+// Serve static files from public directory
 app.use(express.static('public'));
-
-// Also serve static files from organized directories (for local development)
-app.use('/css', express.static('css'));
-app.use('/js', express.static('js'));
-app.use('/html', express.static('html'));
 
 // Routes for HTML pages
 app.get('/', (req, res) => {
-    // Try public first (for Vercel), then html directory (for local)
-    if (fs.existsSync(path.join(__dirname, 'public', 'index.html'))) {
-        res.sendFile(path.join(__dirname, 'public', 'index.html'));
-    } else {
-        res.sendFile(path.join(__dirname, 'html', 'index.html'));
-    }
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.get('/:page', (req, res) => {
@@ -59,14 +45,10 @@ app.get('/:page', (req, res) => {
         return res.status(404).send('Page not found');
     }
     
-    // Try public first (for Vercel), then html directory (for local)
-    const publicPath = path.join(__dirname, 'public', page);
-    const htmlPath = path.join(__dirname, 'html', page);
+    const filePath = path.join(__dirname, 'public', page);
     
-    if (fs.existsSync(publicPath)) {
-        res.sendFile(publicPath);
-    } else if (fs.existsSync(htmlPath)) {
-        res.sendFile(htmlPath);
+    if (fs.existsSync(filePath)) {
+        res.sendFile(filePath);
     } else {
         res.status(404).send('Page not found');
     }
