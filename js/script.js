@@ -21,9 +21,9 @@ class SteganographyApp {
         this.hamburger = document.querySelector('.hamburger');
         this.navMenu = document.querySelector('.nav-menu');
         
-        // Mode buttons
-        this.encodeModeBtn = document.querySelector('[data-mode="encode"]');
-        this.decodeModeBtn = document.querySelector('[data-mode="decode"]');
+        // Mode buttons - fix selectors to match HTML IDs
+        this.encodeModeBtn = document.getElementById('encode-mode');
+        this.decodeModeBtn = document.getElementById('decode-mode');
         
         // Sections
         this.encodeSection = document.getElementById('encode-section');
@@ -38,13 +38,12 @@ class SteganographyApp {
         this.encodeImageInput = document.getElementById('encode-image');
         this.decodeImageInput = document.getElementById('decode-image');
         
-        // Previews
-        this.encodePreview = document.getElementById('encode-preview');
-        this.decodePreview = document.getElementById('decode-preview');
+        // File input displays
+        this.encodeFileDisplay = document.getElementById('encode-file-display');
+        this.decodeFileDisplay = document.getElementById('decode-file-display');
         
-        // Message elements
-        this.messageTextarea = document.getElementById('message');
-        this.charCount = document.getElementById('char-count');
+        // Message elements - fix selector to match HTML ID
+        this.messageTextarea = document.getElementById('message-text');
         this.decodedMessage = document.getElementById('decoded-message');
         
         // Loading overlay
@@ -84,13 +83,13 @@ class SteganographyApp {
         
         // File input changes
         if (this.encodeImageInput) {
-            this.encodeImageInput.addEventListener('change', (e) => this.handleImagePreview(e, this.encodePreview));
+            this.encodeImageInput.addEventListener('change', (e) => this.handleImagePreview(e, this.encodeFileDisplay));
         }
         if (this.decodeImageInput) {
-            this.decodeImageInput.addEventListener('change', (e) => this.handleImagePreview(e, this.decodePreview));
+            this.decodeImageInput.addEventListener('change', (e) => this.handleImagePreview(e, this.decodeFileDisplay));
         }
         
-        // Message character count
+        // Message character count - remove since it doesn't exist in HTML
         if (this.messageTextarea) {
             this.messageTextarea.addEventListener('input', () => this.updateCharCount());
         }
@@ -241,17 +240,19 @@ class SteganographyApp {
         
         // Update mode buttons
         document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+        document.getElementById(`${mode}-mode`).classList.add('active');
         
         // Update sections
         document.querySelectorAll('.tool-section').forEach(section => section.classList.remove('active'));
         document.getElementById(`${mode}-section`).classList.add('active');
         
         // Hide decoded message when switching modes
-        this.decodedMessage.classList.remove('show');
+        if (this.decodedMessage) {
+            this.decodedMessage.classList.remove('show');
+        }
     }
 
-    handleImagePreview(event, previewContainer) {
+    handleImagePreview(event, displayElement) {
         const file = event.target.files[0];
         
         if (file) {
@@ -269,27 +270,15 @@ class SteganographyApp {
                 return;
             }
             
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                previewContainer.innerHTML = `
-                    <img src="${e.target.result}" alt="Preview">
-                    <div class="image-info">
-                        <span><i class="fas fa-file"></i> ${file.name}</span>
-                        <span><i class="fas fa-weight"></i> ${this.formatFileSize(file.size)}</span>
-                    </div>
-                `;
-            };
-            reader.readAsDataURL(file);
-            
             // Update file input display
-            const wrapper = event.target.closest('.file-input-wrapper');
-            const display = wrapper.querySelector('.file-input-display');
-            display.innerHTML = `
+            displayElement.innerHTML = `
                 <i class="fas fa-check-circle" style="color: #10b981;"></i>
-                <span style="color: #10b981;">File selected: ${file.name}</span>
+                <div class="upload-text" style="color: #10b981;">File selected: ${file.name}</div>
+                <div class="upload-hint">${this.formatFileSize(file.size)} - Ready to process</div>
             `;
         } else {
-            previewContainer.innerHTML = '';
+            // Reset display
+            this.resetFileInputDisplay(event.target);
         }
     }
 
@@ -302,16 +291,23 @@ class SteganographyApp {
     }
 
     updateCharCount() {
-        const count = this.messageTextarea.value.length;
-        this.charCount.textContent = count;
+        if (!this.messageTextarea) return;
         
-        // Add visual feedback for character count
-        if (count > 1000) {
-            this.charCount.style.color = '#ef4444';
-        } else if (count > 500) {
-            this.charCount.style.color = '#f59e0b';
-        } else {
-            this.charCount.style.color = 'var(--text-muted)';
+        const count = this.messageTextarea.value.length;
+        
+        // Only update char count if element exists (it doesn't in current HTML)
+        const charCountElement = document.getElementById('char-count');
+        if (charCountElement) {
+            charCountElement.textContent = count;
+            
+            // Add visual feedback for character count
+            if (count > 1000) {
+                charCountElement.style.color = '#ef4444';
+            } else if (count > 500) {
+                charCountElement.style.color = '#f59e0b';
+            } else {
+                charCountElement.style.color = 'var(--text-muted)';
+            }
         }
     }
 
@@ -375,13 +371,10 @@ class SteganographyApp {
             // Use the steganography class to decode the message
             const decodedMessage = await this.steganography.decode(imageFile);
             
-                // Display decoded message
-                const messageContent = this.decodedMessage.querySelector('.message-content');
+            // Display decoded message
+            const messageContent = document.getElementById('decoded-content');
             messageContent.textContent = decodedMessage;
-                this.decodedMessage.classList.add('show');
-                
-                // Add copy button
-                this.addCopyButton(messageContent);
+            this.decodedMessage.classList.add('show');
             
             this.showToast('Message successfully revealed!', 'success');
             
@@ -424,10 +417,12 @@ class SteganographyApp {
 
     resetForm(form) {
         form.reset();
-        const preview = form.id === 'encode-form' ? this.encodePreview : this.decodePreview;
-        preview.innerHTML = '';
-        this.resetFileInputDisplay(form.querySelector('input[type="file"]'));
-        if (form.id === 'encode-form') {
+        const fileInput = form.querySelector('input[type="file"]');
+        if (fileInput) {
+            this.resetFileInputDisplay(fileInput);
+        }
+        
+        if (form.id === 'encode-form' && this.messageTextarea) {
             this.messageTextarea.value = '';
             this.updateCharCount();
         }
@@ -436,9 +431,13 @@ class SteganographyApp {
     resetFileInputDisplay(input) {
         const wrapper = input.closest('.file-input-wrapper');
         const display = wrapper.querySelector('.file-input-display');
+        
+        const isDecodeInput = input.id.includes('decode');
+        
         display.innerHTML = `
-            <i class="fas fa-cloud-upload-alt"></i>
-            <span>${input.id.includes('decode') ? 'Drop encoded image here or click to browse' : 'Drop your image here or click to browse'}</span>
+            <i class="fas fa-${isDecodeInput ? 'search' : 'cloud-upload-alt'}"></i>
+            <div class="upload-text">${isDecodeInput ? 'Choose Encoded Image' : 'Choose Image File'}</div>
+            <div class="upload-hint">Drag & drop or click to select${isDecodeInput ? '' : ' (PNG, JPG, JPEG)'}</div>
         `;
     }
 
@@ -515,6 +514,22 @@ class SteganographyApp {
                         this.toastContainer.removeChild(toast);
                     }
                 }, 300);
+            }
+        });
+    }
+}
+
+// Global function for copy button in HTML
+function copyDecodedMessage() {
+    const messageContent = document.getElementById('decoded-content');
+    if (messageContent && messageContent.textContent) {
+        navigator.clipboard.writeText(messageContent.textContent).then(() => {
+            if (window.steganographyApp) {
+                window.steganographyApp.showToast('Message copied to clipboard!', 'success');
+            }
+        }).catch(() => {
+            if (window.steganographyApp) {
+                window.steganographyApp.showToast('Failed to copy message', 'error');
             }
         });
     }

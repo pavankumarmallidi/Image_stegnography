@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - SteganoCrypt</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/general.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header>
+        <nav class="navbar">
+            <div>
+                <div>
+                    <a href="index.html">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>SteganoCrypt</span>
+                    </a>
+                </div>
+                
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="steganography.html" class="nav-link">SteganoCrypt App</a></li>
+                    <li><a href="about.html" class="nav-link">About Us</a></li>
+                </ul>
+
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1><i class="fas fa-cog"></i> How SteganoCrypt Works</h1>
+            <p>Understanding the science and technology behind invisible message hiding in images.</p>
+        </div>
+
+        <!-- Process Overview -->
+        <section class="card">
+            <h2><i class="fas fa-route"></i> The Steganography Process</h2>
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <h3>Image Analysis</h3>
+                    <p>The system analyzes your image pixel by pixel, examining the color values and identifying the least significant bits.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <h3>Message Conversion</h3>
+                    <p>Your text message is converted into binary format, creating a sequence of 1s and 0s for embedding.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <h3>Bit Manipulation</h3>
+                    <p>Each bit of your message replaces the least significant bit of individual pixel color values.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <h3>Image Recreation</h3>
+                    <p>The modified pixels are reconstructed into a new image that looks identical but contains your hidden message.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Deep Dive -->
+        <section class="card">
+            <h2><i class="fas fa-microscope"></i> LSB Steganography Explained</h2>
+            <p>Least Significant Bit (LSB) steganography is the foundation of our message hiding technology.</p>
+            
+            <div class="content-grid">
+                <div class="content-item">
+                    <i class="fas fa-binary"></i>
+                    <h3>Binary Foundation</h3>
+                    <p>Every pixel color is stored as binary numbers. By changing only the last digit (LSB), we create imperceptible changes.</p>
+                </div>
+                <div class="content-item">
+                    <i class="fas fa-eye"></i>
+                    <h3>Human Vision</h3>
+                    <p>The human eye cannot detect changes of just 1 bit in pixel values, making this method virtually invisible.</p>
+                </div>
+                <div class="content-item">
+                    <i class="fas fa-lock"></i>
+                    <h3>Data Capacity</h3>
+                    <p>Each pixel can hide up to 3 bits (RGB channels), providing substantial capacity for message storage.</p>
+                </div>
+                <div class="content-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Security</h3>
+                    <p>Unlike encryption which scrambles data, steganography hides the existence of the message entirely.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Example Walkthrough -->
+        <section class="card">
+            <h2><i class="fas fa-chalkboard-teacher"></i> Step-by-Step Example</h2>
+            
+            <div class="alert info">
+                <strong>Example:</strong> Hiding the letter "A" (ASCII 65 = 01000001 in binary) in image pixels.
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Pixel</th>
+                        <th>Original RGB</th>
+                        <th>Binary (Last Bit)</th>
+                        <th>Message Bit</th>
+                        <th>Modified RGB</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>(255, 128, 64)</td>
+                        <td>...1, ...0, ...0</td>
+                        <td>0</td>
+                        <td>(254, 128, 64)</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>(200, 150, 100)</td>
+                        <td>...0, ...0, ...0</td>
+                        <td>1</td>
+                        <td>(200, 150, 101)</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>(75, 225, 175)</td>
+                        <td>...1, ...1, ...1</td>
+                        <td>0</td>
+                        <td>(74, 225, 175)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Security Considerations -->
+        <section class="card">
+            <h2><i class="fas fa-shield-check"></i> Security & Privacy</h2>
+            
+            <div class="content-grid">
+                <div class="content-item">
+                    <i class="fas fa-browser"></i>
+                    <h3>Client-Side Processing</h3>
+                    <p>All operations happen in your browser. Your images and messages never leave your device during processing.</p>
+                </div>
+                <div class="content-item">
+                    <i class="fas fa-server"></i>
+                    <h3>No Server Storage</h3>
+                    <p>We don't store any of your data. Images and messages are processed locally and discarded after use.</p>
+                </div>
+                <div class="content-item">
+                    <i class="fas fa-eye-slash"></i>
+                    <h3>Undetectable Changes</h3>
+                    <p>Statistical analysis shows pixel modifications are within normal image noise levels, making detection extremely difficult.</p>
+                </div>
+                <div class="content-item">
+                    <i class="fas fa-code"></i>
+                    <h3>Open Source</h3>
+                    <p>Our algorithms are open source, allowing security experts to verify and improve our methods.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Limitations -->
+        <section class="card">
+            <h2><i class="fas fa-exclamation-triangle"></i> Limitations & Considerations</h2>
+            
+            <div class="alert warning">
+                <strong>Important:</strong> Understanding these limitations helps you use steganography effectively and securely.
+            </div>
+
+            <ul class="feature-list">
+                <li><i class="fas fa-compress"></i> JPEG compression can destroy hidden data due to lossy compression</li>
+                <li><i class="fas fa-resize"></i> Resizing images may corrupt embedded messages</li>
+                <li><i class="fas fa-palette"></i> Image filters or color adjustments can remove hidden data</li>
+                <li><i class="fas fa-chart-line"></i> Statistical analysis can potentially detect steganographic content</li>
+                <li><i class="fas fa-database"></i> Message capacity is limited by image size (roughly 1 character per 8 pixels)</li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Modern Card-Style Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-grid">
+                <!-- Brand Card -->
+                <div class="footer-card">
+                    <div class="footer-brand">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>SteganoCrypt</h3>
+                    </div>
+                    <p class="footer-description">Secure communication through invisible messages. Protecting your privacy with advanced steganography technology that keeps your secrets truly secret.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" title="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Discord">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Product Card -->
+                <div class="footer-card">
+                    <h4><i class="fas fa-cube"></i> Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="features.html"><i class="fas fa-star"></i> Features</a></li>
+                        <li><a href="steganography.html"><i class="fas fa-shield-alt"></i> SteganoCrypt App</a></li>
+                        <li><a href="how-it-works.html"><i class="fas fa-cog"></i> How It Works</a></li>
+                        <li><a href="documentation.html"><i class="fas fa-book"></i> Documentation</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Company Card -->
+                <div class="footer-card">
+                    <h4><i class="fas fa-building"></i> Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+                        <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+                        <li><a href="privacy-policy.html"><i class="fas fa-user-shield"></i> Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html"><i class="fas fa-file-contract"></i> Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Security Card -->
+                <div class="footer-card">
+                    <h4><i class="fas fa-lock"></i> Security</h4>
+                    <ul class="footer-links">
+                        <li><a href="security-audit.html"><i class="fas fa-search"></i> Security Audit</a></li>
+                        <li><a href="bug-bounty.html"><i class="fas fa-bug"></i> Bug Bounty</a></li>
+                        <li><a href="responsible-disclosure.html"><i class="fas fa-shield-check"></i> Responsible Disclosure</a></li>
+                        <li><a href="encryption-standards.html"><i class="fas fa-key"></i> Encryption Standards</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="footer-bottom-card">
+                    <p>
+                        &copy; 2024 SteganoCrypt. All rights reserved. 
+                        Made with <span class="heart">❤️</span> for secure communication.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html> 
