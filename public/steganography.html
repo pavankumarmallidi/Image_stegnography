@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SteganoCrypt - Hide Messages in Images</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Floating Objects -->
+    <div class="floating-objects">
+        <div class="floating-object"></div>
+        <div class="floating-object"></div>
+        <div class="floating-object"></div>
+        <div class="floating-object"></div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Header/Navigation -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>SteganoCrypt</span>
+                    </a>
+                </div>
+                
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#features" class="nav-link">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="steganography.html" class="nav-link active">Try App</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#about" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#contact" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+
+                <div class="nav-controls">
+                    <div class="hamburger">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- App Section -->
+        <section id="app" class="app-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Try SteganoCrypt</h2>
+                    <p class="section-description">
+                        Experience the power of invisible communication
+                    </p>
+                </div>
+
+                <!-- Mode Selection -->
+                <div class="mode-selection">
+                    <button class="mode-btn active" data-mode="encode">
+                        <i class="fas fa-lock"></i>
+                        <span>Hide Message</span>
+                    </button>
+                    <button class="mode-btn" data-mode="decode">
+                        <i class="fas fa-unlock"></i>
+                        <span>Reveal Message</span>
+                    </button>
+                </div>
+
+                <!-- Encode Section -->
+                <div id="encode-section" class="tool-section active">
+                    <div class="tool-card">
+                        <div class="card-header">
+                            <i class="fas fa-lock"></i>
+                            <h3>Hide Secret Message</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="encode-form" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="encode-image">
+                                        <i class="fas fa-image"></i>
+                                        Select Cover Image
+                                    </label>
+                                    <div class="file-input-wrapper">
+                                        <input type="file" id="encode-image" name="image" accept="image/*" required>
+                                        <div class="file-input-display">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <span>Drop your image here or click to browse</span>
+                                        </div>
+                                    </div>
+                                    <div id="encode-preview" class="image-preview"></div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="message">
+                                        <i class="fas fa-comment-alt"></i>
+                                        Secret Message
+                                    </label>
+                                    <textarea id="message" name="message" placeholder="Enter your secret message here..." required></textarea>
+                                    <div class="character-count">
+                                        <span id="char-count">0</span> characters
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary btn-large">
+                                    <i class="fas fa-lock"></i>
+                                    Hide Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Decode Section -->
+                <div id="decode-section" class="tool-section">
+                    <div class="tool-card">
+                        <div class="card-header">
+                            <i class="fas fa-unlock"></i>
+                            <h3>Reveal Hidden Message</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="decode-form" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="decode-image">
+                                        <i class="fas fa-image"></i>
+                                        Select Encoded Image
+                                    </label>
+                                    <div class="file-input-wrapper">
+                                        <input type="file" id="decode-image" name="image" accept="image/*" required>
+                                        <div class="file-input-display">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <span>Drop encoded image here or click to browse</span>
+                                        </div>
+                                    </div>
+                                    <div id="decode-preview" class="image-preview"></div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary btn-large">
+                                    <i class="fas fa-unlock"></i>
+                                    Reveal Message
+                                </button>
+                            </form>
+                            
+                            <div id="decoded-message" class="decoded-message">
+                                <div class="message-header">
+                                    <i class="fas fa-comment-alt"></i>
+                                    <h4>Hidden Message Revealed</h4>
+                                </div>
+                                <div class="message-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Processing your request...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
+    <script src="steganography.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const themeIcon = themeToggle.querySelector('i');
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            themeIcon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+            
+            // Save theme preference
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Load saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', savedTheme);
+        themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+    </script>
+</body>
+</html> 

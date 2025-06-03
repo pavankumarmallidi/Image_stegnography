@@ -314,12 +314,12 @@ class SteganographyApp {
         }
         
         try {
-            this.showLoading(true);
-            
+        this.showLoading(true);
+        
             // Use the steganography class to encode the message
             const encodedImageBlob = await this.steganography.encode(imageFile, message);
-            
-            // Create download link
+                
+                // Create download link
             const url = window.URL.createObjectURL(encodedImageBlob);
             const downloadLink = document.createElement('a');
             downloadLink.href = url;
@@ -327,7 +327,7 @@ class SteganographyApp {
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);
-            
+                
             this.showToast('Message successfully hidden in image!', 'success');
             this.resetForm(this.encodeForm);
             
@@ -355,13 +355,13 @@ class SteganographyApp {
             // Use the steganography class to decode the message
             const decodedMessage = await this.steganography.decode(imageFile);
             
-            // Display decoded message
-            const messageContent = this.decodedMessage.querySelector('.message-content');
+                // Display decoded message
+                const messageContent = this.decodedMessage.querySelector('.message-content');
             messageContent.textContent = decodedMessage;
-            this.decodedMessage.classList.add('show');
-            
-            // Add copy button
-            this.addCopyButton(messageContent);
+                this.decodedMessage.classList.add('show');
+                
+                // Add copy button
+                this.addCopyButton(messageContent);
             
             this.showToast('Message successfully revealed!', 'success');
             
