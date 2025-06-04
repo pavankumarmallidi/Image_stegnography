@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-black;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+  }
+
+  ::-webkit-scrollbar-corner {
+    @apply bg-black;
+  }
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) #000000;
+  }
+}
+
+@layer components {
+  .stegano-card {
+    @apply rounded-xl border bg-card/40 p-6 shadow-lg backdrop-blur-sm transition-all duration-300
+    hover:shadow-xl hover:shadow-primary/5 hover:bg-card/60;
+  }
+  
+  .stegano-button {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-all duration-300
+    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+    disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2;
+  }
+  
+  .stegano-button-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(255,255,255,0.1)]
+    hover:shadow-[0_0_25px_rgba(255,255,255,0.2)] hover:scale-[1.02];
+  }
+  
+  .stegano-button-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:scale-[1.02];
+  }
+  
+  .stegano-input {
+    @apply flex h-10 w-full rounded-md border border-input bg-background/40 px-3 py-2 text-sm 
+    ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium 
+    placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 
+    focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50
+    transition-colors duration-200;
+  }
+  
+  .stegano-textarea {
+    @apply flex min-h-[120px] w-full rounded-md border border-input bg-background/40 px-3 py-2 text-sm 
+    ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none 
+    focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed 
+    disabled:opacity-50 transition-colors duration-200;
+  }
+  
+  .file-dropzone {
+    @apply relative flex flex-col items-center justify-center w-full h-40 rounded-lg border-2 border-dashed 
+    border-primary/20 bg-secondary/20 hover:bg-secondary/30 transition-all duration-300
+    hover:border-primary/40;
+  }
+  
+  .file-dropzone-active {
+    @apply border-primary bg-primary/10;
+  }
+
+  .feature-grid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-6 mt-12;
+  }
+
+  .feature-card {
+    @apply rounded-xl border bg-card/40 p-6 backdrop-blur-sm transition-all duration-300 
+    hover:bg-card/60 hover:shadow-xl hover:shadow-primary/5 hover:scale-[1.02];
+  }
+
+  .hero-badge {
+    @apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors
+    focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground bg-secondary/50
+    hover:bg-secondary/70;
+  }
+}
